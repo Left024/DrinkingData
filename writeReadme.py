@@ -30,7 +30,7 @@ timeM=int(time.strftime("%M", time.localtime()))
 
 if timeD==1 and timeH==0 and timeM==0:
     if timeMonth==1:
-        timeMonth=2
+        timeMonth=13
     date_list = getMothDate(timeY, timeMonth-1)
     if not os.path.exists('historyData'):
         os.makedirs('historyData')
