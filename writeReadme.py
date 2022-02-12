@@ -53,11 +53,12 @@ if timeD==13 and timeH==1: #and timeM==37:
             mlList.append(data['data'][date]['all'])
             monthAll += int(data['data'][date]['all'])
             monthCount += 1
-    #plt.style.use('seaborn-whitegr')
+    plt.style.use('seaborn-muted')
     plt.bar(dateList, mlList)
-    #plt.set(xlabel='date',ylabel='ml')
     plt.xlabel('date')
     plt.ylabel('ml')
+    for a, b in zip(dateList, mlList):
+        plt.text(a, b + 0.05, '%.0f' % b, ha='center', va='bottom')
     plt.savefig('historyData/'+str(timeY)+'/'+str(timeMonth-1)+'/'+str(timeMonth-1)+'.jpg')
     
     f.write('<div align=center>'+'\n'+'<img src="'+str(timeMonth-1)+'.jpg"style="zoom: 100%;" />'+'\n\n')
