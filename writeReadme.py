@@ -29,9 +29,9 @@ timeD=int(time.strftime("%d", time.localtime()))
 timeH=int(time.strftime("%H", time.localtime()))
 timeM=int(time.strftime("%M", time.localtime()))
 
-if timeD==13 and timeH==3: #and timeM==0:
-    if timeMonth==2:
-        timeMonth=2
+if timeD==1 and timeH==0 and timeM==0:
+    if timeMonth==1:
+        timeMonth=13
     date_list = getMothDate(timeY, timeMonth-1)
     if not os.path.exists('historyData'):
         os.makedirs('historyData')
@@ -54,7 +54,7 @@ if timeD==13 and timeH==3: #and timeM==0:
             monthAll += int(data['data'][date]['all'])
             monthCount += 1
     plt.style.use('seaborn-muted')
-    fig, ax = plt.subplots(figsize=(8, 4),dpi=200)
+    fig, ax = plt.subplots(figsize=(8, 4),dpi=100)
     ax.spines['right'].set_visible(False)
     ax.spines['top'].set_visible(False)
     plt.bar(dateList, mlList)
@@ -90,15 +90,51 @@ if timeD==13 and timeH==3: #and timeM==0:
 
 data=get_json_data("data.json")
 f = open('README.md', 'w+')
-'''
+
 if time.strftime("%Y-%m-%d", time.localtime()) in data['data']:
-    times = ['00:00~01:00', '01:00~02:00', '02:00~03:00', '03:00~04:00', '04:00~05:00','05:00~06:00', '06:00~07:00', '07:00~08:00', '08:00~09:00', '09:00~10:00', '10:00~11:00','11:00~12:00', '12:00~13:00', '13:00~14:00', '14:00~15:00', '15:00~16:00', '16:00~17:00', '17:00~18:00', '18:00~19:00','19:00~20:00', '20:00~21:00', '21:00~22:00','22:00~23:00', '23:00~00:00']
+    times = ['0','1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23']
     waters=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-    hourSum=0
+    waterSum=0
     hour=0
     f.write('# 今日饮水数据\n')
-    for time,ml in data['data'][time.strftime("%Y-%m-%d", time.localtime())].items():
-'''     
+    del data['data'][time.strftime("%Y-%m-%d", time.localtime())]['messageId']
+    del data['data'][time.strftime("%Y-%m-%d", time.localtime())]['all']
+    for timee,ml in data['data'][time.strftime("%Y-%m-%d", time.localtime())].items():
+        if hour != int(time.strftime('%H', time.strptime(timee,"%H:%M:%S"))):
+            hour = int(time.strftime('%H', time.strptime(timee,"%H:%M:%S")))
+            waterSum = 0
+        waterSum += ml
+        waters[hour]=waterSum
+        
+    plt.style.use('seaborn-muted')
+    fig, ax = plt.subplots(figsize=(8, 4),dpi=100)
+    ax.spines['right'].set_visible(False)
+    ax.spines['top'].set_visible(False)
+    plt.bar(times, waters)
+    plt.xlabel('time')
+    plt.ylabel('ml')
+    for a, b in zip(times, waters):
+        plt.text(a, b + 0.05, '%.0f' % b, ha='center', va='bottom')
+    plt.savefig('today.jpg')
+    f.write('<div align=center>'+'\n'+'<img src="today.jpg" style="zoom: 100%;" /></div>'+'\n\n')
+    
+    data=get_json_data("data.json")
+    del data['data'][time.strftime("%Y-%m-%d", time.localtime())]['messageId']
+    f.write('| 日期 |')
+    #每一日期的时间和毫升
+    for timee,ml in data['data'][time.strftime("%Y-%m-%d", time.localtime())].items():
+        f.write(' '+timee+' |')
+    f.write('\n'+'| :----: |')
+    for timee,ml in data['data'][time.strftime("%Y-%m-%d", time.localtime())].items():
+        f.write(' :----: |')
+    f.write('\n'+'| '+time.strftime("%Y-%m-%d", time.localtime())+' |')
+    for timee,ml in data['data'][time.strftime("%Y-%m-%d", time.localtime())].items():
+        f.write(' '+str(ml)+' |')
+    f.write('\n\n')
+        
+data=get_json_data("data.json")
+if time.strftime("%Y-%m-%d", time.localtime()) in data['data']:
+    del data['data'][time.strftime("%Y-%m-%d", time.localtime())]
 if days >= 30:
     f.write('# 近30日饮水数据\n')
     #日期和值
