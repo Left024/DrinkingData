@@ -29,7 +29,7 @@ timeD=int(time.strftime("%d", time.localtime()))
 timeH=int(time.strftime("%H", time.localtime()))
 timeM=int(time.strftime("%M", time.localtime()))
 
-if timeD==1 and timeH==3: #and timeM==0:
+if timeD==13 and timeH==3: #and timeM==0:
     if timeMonth==2:
         timeMonth=2
     date_list = getMothDate(timeY, timeMonth-1)
