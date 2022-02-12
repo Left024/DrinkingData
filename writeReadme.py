@@ -1,4 +1,5 @@
 import json,calendar,time,os
+import matplotlib.pyplot as plt
 
 def get_json_data(json_path):
     with open(json_path,'rb') as f:
@@ -28,23 +29,45 @@ timeD=int(time.strftime("%d", time.localtime()))
 timeH=int(time.strftime("%H", time.localtime()))
 timeM=int(time.strftime("%M", time.localtime()))
 
-if timeD==1 and timeH==0 and timeM==0:
-    if timeMonth==1:
-        timeMonth=13
+if timeD==12 and timeH==23: #and timeM==37:
+    if timeMonth==2:
+        timeMonth=2
     date_list = getMothDate(timeY, timeMonth-1)
     if not os.path.exists('historyData'):
         os.makedirs('historyData')
-        if not os.path.exists('historyData/'+str(timeY)):
-            os.makedirs('historyData/'+str(timeY))
-    else:
-        if not os.path.exists('historyData/'+str(timeY)):
-            os.makedirs('historyData/'+str(timeY))
-    f = open('historyData/'+str(timeY)+'/'+str(timeMonth-1)+'.md', 'w+')
+    if not os.path.exists('historyData/'+str(timeY)):
+        os.makedirs('historyData/'+str(timeY))
+    if not os.path.exists('historyData/'+str(timeY)+'/'+str(timeMonth-1)):
+        os.makedirs('historyData/'+str(timeY)+'/'+str(timeMonth-1))
+    
+    f = open('historyData/'+str(timeY)+'/'+str(timeMonth-1)+'/'+str(timeMonth-1)+'.md', 'w+')
+    
+    dateList=[]
+    mlList=[]
+    monthAll=0
+    monthCount=0
+    
+    for date in date_list:
+        if date in data['data']:
+            dateList.append(time.strftime('%d', time.strptime(date,"%Y-%m-%d")))
+            mlList.append(data['data'][date]['all'])
+            monthAll += int(data['data'][date]['all'])
+            monthCount += 1
+    plt.bar(dateList, mlList)
+    plt.savefig('historyData/'+str(timeY)+'/'+str(timeMonth-1)+'/'+str(timeMonth-1)+'.jpg')
+    
+    f.write('![]('+str(timeMonth-1)+'.jpg)'+'\n\n')
+    
+    f.write('| 月总饮水量 | 日均饮水量 |'+'\n'+'| :----: | :----: |'+'\n'+'| '+str(monthAll)+' | '+str(int(monthAll/monthCount))+' |'+'\n\n')
+    f.close
+    
+    
+    
     for date in date_list:
         if date in data['data']:
             # 删除messageID
             del data['data'][date]['messageId']
-            f.write('| 日期 |')
+            f.write('\n| 日期 |')
             #每一日期的时间和毫升
             for time,ml in data['data'][date].items():
                 f.write(' '+time+' |')
