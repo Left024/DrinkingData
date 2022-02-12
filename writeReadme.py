@@ -54,7 +54,7 @@ if timeD==13 and timeH==3: #and timeM==0:
             monthAll += int(data['data'][date]['all'])
             monthCount += 1
     plt.style.use('seaborn-muted')
-    fig, ax = plt.subplots(figsize=(8, 4),dpi=150)
+    fig, ax = plt.subplots(figsize=(8, 4),dpi=100)
     ax.spines['right'].set_visible(False)
     ax.spines['top'].set_visible(False)
     plt.bar(dateList, mlList)
