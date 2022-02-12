@@ -92,19 +92,26 @@ data=get_json_data("data.json")
 f = open('README.md', 'w+')
 
 if time.strftime("%Y-%m-%d", time.localtime()) in data['data']:
-    times = ['0','1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23']
-    waters=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    #times = ['0','1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23']
+    #waters=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    times=[]
+    waters=[]
     waterSum=0
-    hour=0
-    f.write('# 今日饮水数据\n')
+    hour=-1
+    p=-1
+    f.write('# 今日饮水数据\n\n')
     del data['data'][time.strftime("%Y-%m-%d", time.localtime())]['messageId']
+    waterall=data['data'][time.strftime("%Y-%m-%d", time.localtime())]['all']
     del data['data'][time.strftime("%Y-%m-%d", time.localtime())]['all']
     for timee,ml in data['data'][time.strftime("%Y-%m-%d", time.localtime())].items():
         if hour != int(time.strftime('%H', time.strptime(timee,"%H:%M:%S"))):
             hour = int(time.strftime('%H', time.strptime(timee,"%H:%M:%S")))
+            times.append(str(hour))
+            waters.append(0)
             waterSum = 0
+            p+=1
         waterSum += ml
-        waters[hour]=waterSum
+        waters[p]=waterSum
         
     plt.style.use('seaborn-muted')
     fig, ax = plt.subplots(figsize=(8, 4),dpi=100)
@@ -116,10 +123,13 @@ if time.strftime("%Y-%m-%d", time.localtime()) in data['data']:
     for a, b in zip(times, waters):
         plt.text(a, b + 0.05, '%.0f' % b, ha='center', va='bottom')
     plt.savefig('today.jpg')
-    f.write('<div align=center>'+'\n'+'<img src="today.jpg" style="zoom: 100%;" /></div>'+'\n\n')
+    f.write('<div align=center>'+'\n'+'<img src="today.jpg" style="zoom: 100%;" />'+'\n\n')
+    
+    f.write('| 今日总饮水量 | 每小时平均饮水量 |'+'\n'+'| :----: | :----: |'+'\n'+'| '+str(waterall)+' | '+str(int(waterall/(p+1)))+' |'+'\n'+'</div>'+'\n\n')
     
     data=get_json_data("data.json")
     del data['data'][time.strftime("%Y-%m-%d", time.localtime())]['messageId']
+    del data['data'][time.strftime("%Y-%m-%d", time.localtime())]['all']
     f.write('| 日期 |')
     #每一日期的时间和毫升
     for timee,ml in data['data'][time.strftime("%Y-%m-%d", time.localtime())].items():
@@ -133,10 +143,10 @@ if time.strftime("%Y-%m-%d", time.localtime()) in data['data']:
     f.write('\n\n')
         
 data=get_json_data("data.json")
+f.write('# 近30日饮水数据\n\n')
 if time.strftime("%Y-%m-%d", time.localtime()) in data['data']:
     del data['data'][time.strftime("%Y-%m-%d", time.localtime())]
 if days >= 30:
-    f.write('# 近30日饮水数据\n')
     #日期和值
     i=0
     #日期和值
@@ -158,7 +168,6 @@ if days >= 30:
         if i>30:
             break
 else:
-    f.write('# 近30日饮水数据\n')
     #日期和值
     for date,value in data['data'].items():
         # 删除messageID
