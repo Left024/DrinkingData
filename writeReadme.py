@@ -29,7 +29,7 @@ timeD=int(time.strftime("%d", time.localtime()))
 timeH=int(time.strftime("%H", time.localtime()))
 timeM=int(time.strftime("%M", time.localtime()))
 
-if timeD==13 and timeH==1: #and timeM==37:
+if timeD==1 and timeH==3: #and timeM==0:
     if timeMonth==2:
         timeMonth=2
     date_list = getMothDate(timeY, timeMonth-1)
@@ -54,6 +54,9 @@ if timeD==13 and timeH==1: #and timeM==37:
             monthAll += int(data['data'][date]['all'])
             monthCount += 1
     plt.style.use('seaborn-muted')
+    fig, ax = plt.subplots(figsize=(8, 4),dpi=150)
+    ax.spines['right'].set_visible(False)
+    ax.spines['top'].set_visible(False)
     plt.bar(dateList, mlList)
     plt.xlabel('date')
     plt.ylabel('ml')
@@ -86,8 +89,17 @@ if timeD==13 and timeH==1: #and timeM==37:
     f.close
 
 data=get_json_data("data.json")
+f = open('README.md', 'w+')
+'''
+if time.strftime("%Y-%m-%d", time.localtime()) in data['data']:
+    times = ['00:00~01:00', '01:00~02:00', '02:00~03:00', '03:00~04:00', '04:00~05:00','05:00~06:00', '06:00~07:00', '07:00~08:00', '08:00~09:00', '09:00~10:00', '10:00~11:00','11:00~12:00', '12:00~13:00', '13:00~14:00', '14:00~15:00', '15:00~16:00', '16:00~17:00', '17:00~18:00', '18:00~19:00','19:00~20:00', '20:00~21:00', '21:00~22:00','22:00~23:00', '23:00~00:00']
+    waters=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    hourSum=0
+    hour=0
+    f.write('# 今日饮水数据\n')
+    for time,ml in data['data'][time.strftime("%Y-%m-%d", time.localtime())].items():
+'''     
 if days >= 30:
-    f = open('README.md', 'w+')
     f.write('# 近30日饮水数据\n')
     #日期和值
     i=0
@@ -109,9 +121,7 @@ if days >= 30:
         i+=1
         if i>30:
             break
-    f.close
 else:
-    f = open('README.md', 'w+')
     f.write('# 近30日饮水数据\n')
     #日期和值
     for date,value in data['data'].items():
@@ -128,4 +138,3 @@ else:
         for time,ml in data['data'][date].items():
             f.write(' '+str(ml)+' |')
         f.write('\n\n')
-    f.close
