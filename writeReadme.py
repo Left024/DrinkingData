@@ -53,12 +53,16 @@ if timeD==13 and timeH==1: #and timeM==37:
             mlList.append(data['data'][date]['all'])
             monthAll += int(data['data'][date]['all'])
             monthCount += 1
+    #plt.style.use('seaborn-whitegr')
     plt.bar(dateList, mlList)
+    #plt.set(xlabel='date',ylabel='ml')
+    plt.xlabel('date')
+    plt.ylabel('ml')
     plt.savefig('historyData/'+str(timeY)+'/'+str(timeMonth-1)+'/'+str(timeMonth-1)+'.jpg')
     
-    f.write('<div align=center>'+'\n'+'<img src="'+str(timeMonth-1)+'.jpg"style="zoom: 100%;" />'+'\n'+'</div>'+'\n\n')
+    f.write('<div align=center>'+'\n'+'<img src="'+str(timeMonth-1)+'.jpg"style="zoom: 100%;" />'+'\n\n')
     
-    f.write('| 月总饮水量 | 日均饮水量 |'+'\n'+'| :----: | :----: |'+'\n'+'| '+str(monthAll)+' | '+str(int(monthAll/monthCount))+' |'+'\n\n')
+    f.write('| 月总饮水量 | 日均饮水量 |'+'\n'+'| :----: | :----: |'+'\n'+'| '+str(monthAll)+' | '+str(int(monthAll/monthCount))+' |'+'\n'+'</div>'+'\n\n')
     f.close
     
     
