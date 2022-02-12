@@ -29,7 +29,7 @@ timeD=int(time.strftime("%d", time.localtime()))
 timeH=int(time.strftime("%H", time.localtime()))
 timeM=int(time.strftime("%M", time.localtime()))
 
-if timeD==12 and timeH==23: #and timeM==37:
+if timeD==13 and timeH==1: #and timeM==37:
     if timeMonth==2:
         timeMonth=2
     date_list = getMothDate(timeY, timeMonth-1)
@@ -56,7 +56,7 @@ if timeD==12 and timeH==23: #and timeM==37:
     plt.bar(dateList, mlList)
     plt.savefig('historyData/'+str(timeY)+'/'+str(timeMonth-1)+'/'+str(timeMonth-1)+'.jpg')
     
-    f.write('![]('+str(timeMonth-1)+'.jpg)'+'\n\n')
+    f.write('<div align=center>'+'\n'+'<img src="'+str(timeMonth-1)+'.jpg"style="zoom: 100%;" />'+'\n'+'</div>'+'\n\n')
     
     f.write('| 月总饮水量 | 日均饮水量 |'+'\n'+'| :----: | :----: |'+'\n'+'| '+str(monthAll)+' | '+str(int(monthAll/monthCount))+' |'+'\n\n')
     f.close
