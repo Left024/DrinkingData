@@ -1,0 +1,44 @@
+name: Update
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+
+#on:
+#  push:
+#    branches:
+#    - dev
+
+jobs:
+  sync:
+    name: Sync
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: dev
+
+      - name: Install Python 3.7
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.7
+
+      - name: Install requirements
+        run: |
+          pip3 install -r requirements.txt
+
+      - name: Denerate json
+        run: |
+          export TZ='Asia/Shanghai'
+          python3 writeReadme.py ${{ secrets.DATA_URL }}
+
+      - name: push
+        uses: github-actions-x/commit@v2.8
+        with:
+          github-token: ${{ secrets.TOKEN }}
+          push-branch: 'dev'
+          commit-message: 'update'
+          force-add: 'false'
+          name: left916
+          email: 1379771811@qq.com
