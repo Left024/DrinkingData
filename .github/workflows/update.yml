@@ -17,7 +17,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          ref: dev
+          ref: main
 
       - name: Install Python 3.7
         uses: actions/setup-python@v1
@@ -37,7 +37,7 @@ jobs:
         uses: github-actions-x/commit@v2.8
         with:
           github-token: ${{ secrets.TOKEN }}
-          push-branch: 'dev'
+          push-branch: 'main'
           commit-message: 'update'
           force-add: 'false'
           name: left916
