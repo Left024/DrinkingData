@@ -14,7 +14,7 @@ def get_json_data(json_path):
                 params = json.load(f)
             f.close()
         else:
-            write_json_data(data,'data.json')
+            write_json_data(params,'data.json')
     else:
         with open(json_path,'rb') as f:
             params = json.load(f)
