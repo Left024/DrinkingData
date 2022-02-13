@@ -1,6 +1,11 @@
 import json,calendar,time,os,sys,requests
 import matplotlib.pyplot as plt
 
+def write_json_data(dict,path):
+    with open(path,'w') as r:
+        json.dump(dict,r)
+    r.close()
+
 def get_json_data(json_path):
     if len(sys.argv)>1:
         params = json.loads(requests.get(str(sys.argv[1])).text)
@@ -8,6 +13,8 @@ def get_json_data(json_path):
             with open(json_path,'rb') as f:
                 params = json.load(f)
             f.close()
+        else:
+            write_json_data(data,'data.json')
     else:
         with open(json_path,'rb') as f:
             params = json.load(f)
