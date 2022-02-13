@@ -1,10 +1,17 @@
-import json,calendar,time,os
+import json,calendar,time,os,sys,requests
 import matplotlib.pyplot as plt
 
 def get_json_data(json_path):
-    with open(json_path,'rb') as f:
-        params = json.load(f)
-    f.close()
+    if len(sys.argv)>1:
+        params = json.loads(requests.get(str(sys.argv[1])).text)
+        if 'data' not in params:
+            with open(json_path,'rb') as f:
+                params = json.load(f)
+            f.close()
+    else:
+        with open(json_path,'rb') as f:
+            params = json.load(f)
+        f.close()
     return params
 
 def getMothDate(year, month):
