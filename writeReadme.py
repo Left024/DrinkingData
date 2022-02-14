@@ -106,8 +106,6 @@ data=get_json_data("data.json")
 f = open('README.md', 'w+')
 
 if time.strftime("%Y-%m-%d", time.localtime()) in data['data']:
-    #times = ['0','1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23']
-    #waters=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
     times=[]
     waters=[]
     waterSum=0
@@ -126,12 +124,20 @@ if time.strftime("%Y-%m-%d", time.localtime()) in data['data']:
             p+=1
         waterSum += ml
         waters[p]=waterSum
+    if p<8:
+        for i in range(1,8-p):
+            if hour+i>=24:
+                hhh=hour+i-24
+            else:
+                hhh=hour+i
+            times.append(str(hhh))
+            waters.append(0)
         
     plt.style.use('seaborn-muted')
     fig, ax = plt.subplots(figsize=(8, 4),dpi=100)
     ax.spines['right'].set_visible(False)
     ax.spines['top'].set_visible(False)
-    plt.bar(times, waters)
+    plt.bar(times, waters,width=0.45)
     plt.xlabel('time')
     plt.ylabel('ml')
     for a, b in zip(times, waters):
