@@ -28,7 +28,7 @@ jobs:
         run: |
           pip3 install -r requirements.txt
 
-      - name: Denerate json
+      - name: Generate json
         run: |
           export TZ='Asia/Shanghai'
           python3 writeReadme.py ${{ secrets.DATA_URL }}
