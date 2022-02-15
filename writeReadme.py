@@ -1,4 +1,4 @@
-import json,calendar,time,os,sys,requests
+import json,calendar,time,os,sys,requests,datetime
 import matplotlib.pyplot as plt
 
 def write_json_data(dict,path):
@@ -43,7 +43,7 @@ timeD=int(time.strftime("%d", time.localtime()))
 timeH=int(time.strftime("%H", time.localtime()))
 timeM=int(time.strftime("%M", time.localtime()))
 
-if timeD==1 and timeH==0 and timeM==0:
+if timeD==1 and timeH==0 and timeM<=30:
     if timeMonth==1:
         timeMonth=13
     date_list = getMothDate(timeY, timeMonth-1)
@@ -58,25 +58,28 @@ if timeD==1 and timeH==0 and timeM==0:
     
     dateList=[]
     mlList=[]
+    monthData={}
     monthAll=0
     monthCount=0
     
     for date in date_list:
         if date in data['data']:
+            monthData[date]=data['data'][date]
             dateList.append(time.strftime('%d', time.strptime(date,"%Y-%m-%d")))
             mlList.append(data['data'][date]['all'])
             monthAll += int(data['data'][date]['all'])
             monthCount += 1
     plt.style.use('seaborn-muted')
-    fig, ax = plt.subplots(figsize=(8, 4),dpi=100)
+    fig, ax = plt.subplots(figsize=(18, 6),dpi=100)
     ax.spines['right'].set_visible(False)
     ax.spines['top'].set_visible(False)
-    plt.bar(dateList, mlList)
+    plt.bar(dateList, mlList,width=0.45)
     plt.xlabel('date')
     plt.ylabel('ml')
     for a, b in zip(dateList, mlList):
         plt.text(a, b + 0.05, '%.0f' % b, ha='center', va='bottom')
     plt.savefig('historyData/'+str(timeY)+'/'+str(timeMonth-1)+'/'+str(timeMonth-1)+'.jpg')
+    write_json_data(monthData,'historyData/'+str(timeY)+'/'+str(timeMonth-1)+'/'+str(timeMonth-1)+'.json')
     
     f.write('<div align=center>'+'\n'+'<img src="'+str(timeMonth-1)+'.jpg"style="zoom: 100%;" />'+'\n\n')
     
@@ -91,13 +94,13 @@ if timeD==1 and timeH==0 and timeM==0:
             del data['data'][date]['messageId']
             f.write('\n| 日期 |')
             #每一日期的时间和毫升
-            for time,ml in data['data'][date].items():
-                f.write(' '+time+' |')
+            for timeee,ml in data['data'][date].items():
+                f.write(' '+timeee+' |')
             f.write('\n'+'| :----: |')
-            for time,ml in data['data'][date].items():
+            for timeee,ml in data['data'][date].items():
                 f.write(' :----: |')
             f.write('\n'+'| '+date+' |')
-            for time,ml in data['data'][date].items():
+            for timeee,ml in data['data'][date].items():
                 f.write(' '+str(ml)+' |')
             f.write('\n\n')
     f.close
@@ -166,10 +169,35 @@ data=get_json_data("data.json")
 f.write('# 近30日饮水数据\n\n')
 if time.strftime("%Y-%m-%d", time.localtime()) in data['data']:
     del data['data'][time.strftime("%Y-%m-%d", time.localtime())]
+dateList=[]
+mlList=[]
+monthAll=0
+monthCount=0
+now = datetime.datetime.now()
+for x in range(30,0,-1):
+    delta = datetime.timedelta(days=-x)
+    n_days = now + delta
+    date=n_days.strftime('%Y-%m-%d')
+    if date in data['data']:
+        dateList.append(time.strftime('%m-%d', time.strptime(date,"%Y-%m-%d")))
+        mlList.append(data['data'][date]['all'])
+        monthAll += int(data['data'][date]['all'])
+        monthCount += 1
+plt.style.use('seaborn-muted')
+fig, ax = plt.subplots(figsize=(18, 6),dpi=100)
+ax.spines['right'].set_visible(False)
+ax.spines['top'].set_visible(False)
+plt.bar(dateList, mlList,width=0.45)
+plt.xlabel('date')
+plt.ylabel('ml')
+for a, b in zip(dateList, mlList):
+    plt.text(a, b + 0.05, '%.0f' % b, ha='center', va='bottom')
+plt.savefig('30.jpg')
+f.write('<div align=center>'+'\n'+'<img src="30.jpg"style="zoom: 100%;" />'+'\n\n')
+f.write('| 总饮水量 | 日均饮水量 |'+'\n'+'| :----: | :----: |'+'\n'+'| '+str(monthAll)+' | '+str(int(monthAll/monthCount))+' |'+'\n'+'</div>'+'\n\n')
+
 if days >= 30:
-    #日期和值
     i=0
-    #日期和值
     for date,value in data['data'].items():
         # 删除messageID
         del data['data'][date]['messageId']
