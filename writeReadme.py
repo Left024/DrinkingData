@@ -1,4 +1,4 @@
-import json,calendar,time,os,sys,requests
+import json,calendar,time,os,sys,requests,datetime
 import matplotlib.pyplot as plt
 
 def write_json_data(dict,path):
@@ -70,7 +70,7 @@ if timeD==1 and timeH==0 and timeM<=30:
             monthAll += int(data['data'][date]['all'])
             monthCount += 1
     plt.style.use('seaborn-muted')
-    fig, ax = plt.subplots(figsize=(8, 4),dpi=100)
+    fig, ax = plt.subplots(figsize=(18, 6),dpi=100)
     ax.spines['right'].set_visible(False)
     ax.spines['top'].set_visible(False)
     plt.bar(dateList, mlList,width=0.45)
@@ -169,34 +169,34 @@ data=get_json_data("data.json")
 f.write('# 近30日饮水数据\n\n')
 if time.strftime("%Y-%m-%d", time.localtime()) in data['data']:
     del data['data'][time.strftime("%Y-%m-%d", time.localtime())]
-if days >= 30:
-    dateList=[]
-    mlList=[]
-    monthAll=0
-    monthCount=0
-    #日期和值
-    for date,value in data['data'].items():
-        dateList.append(time.strftime('%d', time.strptime(date,"%Y-%m-%d")))
+dateList=[]
+mlList=[]
+monthAll=0
+monthCount=0
+now = datetime.datetime.now()
+for x in range(30,0,-1):
+    delta = datetime.timedelta(days=-x)
+    n_days = now + delta
+    date=n_days.strftime('%Y-%m-%d')
+    if date in data['data']:
+        dateList.append(time.strftime('%m-%d', time.strptime(date,"%Y-%m-%d")))
         mlList.append(data['data'][date]['all'])
         monthAll += int(data['data'][date]['all'])
         monthCount += 1
-        if monthCount>=30:
-            break
-    plt.style.use('seaborn-muted')
-    fig, ax = plt.subplots(figsize=(8, 4),dpi=100)
-    ax.spines['right'].set_visible(False)
-    ax.spines['top'].set_visible(False)
-    plt.bar(dateList, mlList,width=0.45)
-    plt.xlabel('date')
-    plt.ylabel('ml')
-    for a, b in zip(dateList, mlList):
-        plt.text(a, b + 0.05, '%.0f' % b, ha='center', va='bottom')
-    plt.savefig('30.jpg')
-    
-    f.write('<div align=center>'+'\n'+'<img src="30.jpg"style="zoom: 100%;" />'+'\n\n')
-    
-    f.write('| 总饮水量 | 日均饮水量 |'+'\n'+'| :----: | :----: |'+'\n'+'| '+str(monthAll)+' | '+str(int(monthAll/monthCount))+' |'+'\n'+'</div>'+'\n\n')
-    
+plt.style.use('seaborn-muted')
+fig, ax = plt.subplots(figsize=(18, 6),dpi=100)
+ax.spines['right'].set_visible(False)
+ax.spines['top'].set_visible(False)
+plt.bar(dateList, mlList,width=0.45)
+plt.xlabel('date')
+plt.ylabel('ml')
+for a, b in zip(dateList, mlList):
+    plt.text(a, b + 0.05, '%.0f' % b, ha='center', va='bottom')
+plt.savefig('30.jpg')
+f.write('<div align=center>'+'\n'+'<img src="30.jpg"style="zoom: 100%;" />'+'\n\n')
+f.write('| 总饮水量 | 日均饮水量 |'+'\n'+'| :----: | :----: |'+'\n'+'| '+str(monthAll)+' | '+str(int(monthAll/monthCount))+' |'+'\n'+'</div>'+'\n\n')
+
+if days >= 30:
     i=0
     for date,value in data['data'].items():
         # 删除messageID
@@ -216,30 +216,6 @@ if days >= 30:
         if i>30:
             break
 else:
-    dateList=[]
-    mlList=[]
-    monthAll=0
-    monthCount=0
-    #日期和值
-    for date,value in data['data'].items():
-        dateList.append(time.strftime('%d', time.strptime(date,"%Y-%m-%d")))
-        mlList.append(data['data'][date]['all'])
-        monthAll += int(data['data'][date]['all'])
-        monthCount += 1
-    plt.style.use('seaborn-muted')
-    fig, ax = plt.subplots(figsize=(14, 4),dpi=100)
-    ax.spines['right'].set_visible(False)
-    ax.spines['top'].set_visible(False)
-    plt.bar(dateList, mlList,width=0.45)
-    plt.xlabel('date')
-    plt.ylabel('ml')
-    for a, b in zip(dateList, mlList):
-        plt.text(a, b + 0.05, '%.0f' % b, ha='center', va='bottom')
-    plt.savefig('30.jpg')
-    
-    f.write('<div align=center>'+'\n'+'<img src="30.jpg"style="zoom: 100%;" />'+'\n\n')
-    
-    f.write('| 总饮水量 | 日均饮水量 |'+'\n'+'| :----: | :----: |'+'\n'+'| '+str(monthAll)+' | '+str(int(monthAll/monthCount))+' |'+'\n'+'</div>'+'\n\n')
     #日期和值
     for date,value in data['data'].items():
         # 删除messageID
