@@ -58,7 +58,7 @@ if timeD==1 and timeH==0 and timeM<=30:
     
     dateList=[]
     mlList=[]
-    monthData={}
+    monthData={'all':0,'average':0}
     monthAll=0
     monthCount=0
     
@@ -69,6 +69,8 @@ if timeD==1 and timeH==0 and timeM<=30:
             mlList.append(data['data'][date]['all'])
             monthAll += int(data['data'][date]['all'])
             monthCount += 1
+    monthData['all']=monthAll
+    monthData['average']=int(monthAll/monthCount)
     plt.style.use('seaborn-muted')
     fig, ax = plt.subplots(figsize=(18, 6),dpi=100)
     ax.spines['right'].set_visible(False)
