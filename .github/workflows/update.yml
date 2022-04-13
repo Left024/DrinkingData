@@ -50,4 +50,4 @@ jobs:
           git config user.email 1379771811@qq.com
           git add .
           git commit -m "generated readme"
-          git push
+          (git push) || true
