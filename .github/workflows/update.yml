@@ -30,6 +30,9 @@ jobs:
         run: |
           export TZ='Asia/Shanghai'
           python3 writeReadme.py ${{ secrets.DATA_URL }}
+
+      - name: Run safe dir
+        run: |
           git config --global --add safe.directory /github/workspace
 
       - name: push
