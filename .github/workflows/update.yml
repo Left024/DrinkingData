@@ -3,11 +3,9 @@ name: Update
 on:
   schedule:
     - cron: '*/5 * * * *'
-
-#on:
-#  push:
-#    branches:
-#    - dev
+  push:
+    branches:
+    - main
 
 jobs:
   sync:
