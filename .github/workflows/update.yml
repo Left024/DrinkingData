@@ -49,5 +49,5 @@ jobs:
           git config user.name left916
           git config user.email 1379771811@qq.com
           git add .
-          git commit -m "generated readme"
+          git commit --allow-empty -m "generated readme"
           (git push) || true
