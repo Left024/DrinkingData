@@ -32,6 +32,7 @@ jobs:
         run: |
           export TZ='Asia/Shanghai'
           python3 writeReadme.py ${{ secrets.DATA_URL }}
+          git config --global --add safe.directory /github/workspace
 
       - name: push
         uses: github-actions-x/commit@v2.8
