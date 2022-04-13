@@ -52,7 +52,7 @@ jobs:
           echo $OUTPUT
       
       - name: Push README
-        if: steps.check.outputs.OUTPUT == dirty
+        if: steps.check.outputs.OUTPUT == "dirty"
         run: |
           git config user.name left916
           git config user.email 1379771811@qq.com
