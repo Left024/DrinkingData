@@ -35,12 +35,19 @@ jobs:
         run: |
           git config --global --add safe.directory /github/workspace
 
-      - name: push
-        uses: github-actions-x/commit@v2.8
-        with:
-          github-token: ${{ secrets.TOKEN }}
-          push-branch: 'main'
-          commit-message: 'update'
-          force-add: 'false'
-          name: left916
-          email: 1379771811@qq.com
+      #- name: push
+      #  uses: github-actions-x/commit@v2.8
+      #  with:
+      #    github-token: ${{ secrets.TOKEN }}
+      #    push-branch: 'main'
+      #    commit-message: 'update'
+      #    force-add: 'false'
+      #    name: left916
+      #    email: 1379771811@qq.com
+      - name: Push README
+        run: |
+          git config user.name left916
+          git config user.email 1379771811@qq.com
+          git add .
+          git commit -m "generated readme"
+          git push
