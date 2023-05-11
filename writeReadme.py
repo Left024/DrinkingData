@@ -82,7 +82,7 @@ if timeD==1 and timeH==0 and timeM<=30:
     plt.bar(dateList, mlList,width=0.45)
     plt.axhline(y=2000, linestyle='--', color='red')
     # 设置字体
-    font = {'family': 'serif', 'color': '#cccccc'}
+    font = {'family': 'serif', 'color': '#999999'}
     plt.xlabel('time',fontdict=font)
     plt.ylabel('ml',fontdict=font)
     for a, b in zip(dateList, mlList):
@@ -90,9 +90,9 @@ if timeD==1 and timeH==0 and timeM<=30:
 
     # 设置坐标轴颜色
     ax = plt.gca()  # 获取当前坐标轴
-    ax.spines['bottom'].set_color('#cccccc')  # 设置底边框颜色
-    ax.spines['left'].set_color('#cccccc')  # 设置左边框颜色
-    ax.tick_params(axis='both', colors='#cccccc')  # 设置刻度颜色
+    ax.spines['bottom'].set_color('#999999')  # 设置底边框颜色
+    ax.spines['left'].set_color('#999999')  # 设置左边框颜色
+    ax.tick_params(axis='both', colors='#999999')  # 设置刻度颜色
     fig.tight_layout()
     plt.savefig('historyData/'+str(timeY)+'/'+str(timeMonth-1)+'/'+str(timeMonth-1)+'.png',transparent=True)
     write_json_data(monthData,'historyData/'+str(timeY)+'/'+str(timeMonth-1)+'/'+str(timeMonth-1)+'.json')
@@ -158,7 +158,7 @@ if time.strftime("%Y-%m-%d", time.localtime()) in data['data']:
     ax.spines['top'].set_visible(False)
     plt.bar(times, waters,width=0.45)
     # 设置字体
-    font = {'family': 'serif', 'color': '#cccccc'}
+    font = {'family': 'serif', 'color': '#999999'}
     plt.xlabel('time',fontdict=font)
     plt.ylabel('ml',fontdict=font)
     for a, b in zip(times, waters):
@@ -166,9 +166,9 @@ if time.strftime("%Y-%m-%d", time.localtime()) in data['data']:
 
     # 设置坐标轴颜色
     ax = plt.gca()  # 获取当前坐标轴
-    ax.spines['bottom'].set_color('#cccccc')  # 设置底边框颜色
-    ax.spines['left'].set_color('#cccccc')  # 设置左边框颜色
-    ax.tick_params(axis='both', colors='#cccccc')  # 设置刻度颜色
+    ax.spines['bottom'].set_color('#999999')  # 设置底边框颜色
+    ax.spines['left'].set_color('#999999')  # 设置左边框颜色
+    ax.tick_params(axis='both', colors='#999999')  # 设置刻度颜色
     fig.tight_layout()
     plt.savefig('today.png',transparent=True)
     f.write('<div align=center>'+'\n'+'<img src="today.png" style="zoom: 100%;" />'+'\n\n')
@@ -214,7 +214,7 @@ ax.spines['right'].set_visible(False)
 ax.spines['top'].set_visible(False)
 plt.bar(dateList, mlList,width=0.45)
 plt.axhline(y=2000, linestyle='--', color='red')
-font = {'family': 'serif', 'color': '#cccccc'}
+font = {'family': 'serif', 'color': '#999999'}
 plt.xlabel('time',fontdict=font)
 plt.ylabel('ml',fontdict=font)
 for a, b in zip(dateList, mlList):
@@ -222,9 +222,9 @@ for a, b in zip(dateList, mlList):
 
 # 设置坐标轴颜色
 ax = plt.gca()  # 获取当前坐标轴
-ax.spines['bottom'].set_color('#cccccc')  # 设置底边框颜色
-ax.spines['left'].set_color('#cccccc')  # 设置左边框颜色
-ax.tick_params(axis='both', colors='#cccccc')  # 设置刻度颜色
+ax.spines['bottom'].set_color('#999999')  # 设置底边框颜色
+ax.spines['left'].set_color('#999999')  # 设置左边框颜色
+ax.tick_params(axis='both', colors='#999999')  # 设置刻度颜色
 fig.tight_layout()
 plt.savefig('30.png',transparent=True)
 f.write('<div align=center>'+'\n'+'<img src="30.png"style="zoom: 100%;" />'+'\n\n')
