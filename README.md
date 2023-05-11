@@ -1,7 +1,7 @@
 # 今日饮水数据
 
 <div align=center>
-<img src="today.jpg" style="zoom: 100%;" />
+<img src="today.png" style="zoom: 100%;" />
 
 | 今日总饮水量 | 每小时平均饮水量 |
 | :----: | :----: |
@@ -15,7 +15,7 @@
 # 近30日饮水数据
 
 <div align=center>
-<img src="30.jpg"style="zoom: 100%;" />
+<img src="30.png"style="zoom: 100%;" />
 
 | 总饮水量 | 日均饮水量 |
 | :----: | :----: |

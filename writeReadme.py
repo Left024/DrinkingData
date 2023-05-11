@@ -43,9 +43,14 @@ timeD=int(time.strftime("%d", time.localtime()))
 timeH=int(time.strftime("%H", time.localtime()))
 timeM=int(time.strftime("%M", time.localtime()))
 
+#timeD=1
+#timeH=0
+#timeM=30
+
 if timeD==1 and timeH==0 and timeM<=30:
     if timeMonth==1:
         timeMonth=13
+        timeY=timeY-1
     date_list = getMothDate(timeY, timeMonth-1)
     if not os.path.exists('historyData'):
         os.makedirs('historyData')
@@ -54,14 +59,13 @@ if timeD==1 and timeH==0 and timeM<=30:
     if not os.path.exists('historyData/'+str(timeY)+'/'+str(timeMonth-1)):
         os.makedirs('historyData/'+str(timeY)+'/'+str(timeMonth-1))
     
-    f = open('historyData/'+str(timeY)+'/'+str(timeMonth-1)+'/'+str(timeMonth-1)+'.md', 'w+')
+    f = open('historyData/'+str(timeY)+'/'+str(timeMonth-1)+'/'+str(timeMonth-1)+'.md', 'w+',encoding='utf-8')
     
     dateList=[]
     mlList=[]
     monthData={'all':0,'average':0}
     monthAll=0
     monthCount=0
-    
     for date in date_list:
         if date in data['data']:
             monthData[date]=data['data'][date]
@@ -76,14 +80,24 @@ if timeD==1 and timeH==0 and timeM<=30:
     ax.spines['right'].set_visible(False)
     ax.spines['top'].set_visible(False)
     plt.bar(dateList, mlList,width=0.45)
-    plt.xlabel('date')
-    plt.ylabel('ml')
+    plt.axhline(y=2000, linestyle='--', color='red')
+    # 设置字体
+    font = {'family': 'serif', 'color': 'gray'}
+    plt.xlabel('time',fontdict=font)
+    plt.ylabel('ml',fontdict=font)
     for a, b in zip(dateList, mlList):
-        plt.text(a, b + 0.05, '%.0f' % b, ha='center', va='bottom')
-    plt.savefig('historyData/'+str(timeY)+'/'+str(timeMonth-1)+'/'+str(timeMonth-1)+'.jpg')
+        plt.text(a, b + 0.05, '%.0f' % b, ha='center', va='bottom',fontdict=font)
+
+    # 设置坐标轴颜色
+    ax = plt.gca()  # 获取当前坐标轴
+    ax.spines['bottom'].set_color('gray')  # 设置底边框颜色
+    ax.spines['left'].set_color('gray')  # 设置左边框颜色
+    ax.tick_params(axis='both', colors='gray')  # 设置刻度颜色
+    fig.tight_layout()
+    plt.savefig('historyData/'+str(timeY)+'/'+str(timeMonth-1)+'/'+str(timeMonth-1)+'.png',transparent=True)
     write_json_data(monthData,'historyData/'+str(timeY)+'/'+str(timeMonth-1)+'/'+str(timeMonth-1)+'.json')
     
-    f.write('<div align=center>'+'\n'+'<img src="'+str(timeMonth-1)+'.jpg"style="zoom: 100%;" />'+'\n\n')
+    f.write('<div align=center>'+'\n'+'<img src="'+str(timeMonth-1)+'.png"style="zoom: 100%;" />'+'\n\n')
     
     f.write('| 月总饮水量 | 日均饮水量 |'+'\n'+'| :----: | :----: |'+'\n'+'| '+str(monthAll)+' | '+str(int(monthAll/monthCount))+' |'+'\n'+'</div>'+'\n\n')
     f.close
@@ -108,7 +122,7 @@ if timeD==1 and timeH==0 and timeM<=30:
     f.close
 
 data=get_json_data("data.json")
-f = open('README.md', 'w+')
+f = open('README.md', 'w+',encoding='utf-8')
 
 if time.strftime("%Y-%m-%d", time.localtime()) in data['data']:
     times=[]
@@ -129,8 +143,8 @@ if time.strftime("%Y-%m-%d", time.localtime()) in data['data']:
             p+=1
         waterSum += ml
         waters[p]=waterSum
-    if p<8:
-        for i in range(1,8-p):
+    if p<12:
+        for i in range(1,12-p):
             if hour+i>=24:
                 hhh=hour+i-24
             else:
@@ -139,16 +153,25 @@ if time.strftime("%Y-%m-%d", time.localtime()) in data['data']:
             waters.append(0)
         
     plt.style.use('seaborn-muted')
-    fig, ax = plt.subplots(figsize=(8, 4),dpi=100)
+    fig, ax = plt.subplots(figsize=(18, 6),dpi=200)
     ax.spines['right'].set_visible(False)
     ax.spines['top'].set_visible(False)
     plt.bar(times, waters,width=0.45)
-    plt.xlabel('time')
-    plt.ylabel('ml')
+    # 设置字体
+    font = {'family': 'serif', 'color': 'gray'}
+    plt.xlabel('time',fontdict=font)
+    plt.ylabel('ml',fontdict=font)
     for a, b in zip(times, waters):
-        plt.text(a, b + 0.05, '%.0f' % b, ha='center', va='bottom')
-    plt.savefig('today.jpg')
-    f.write('<div align=center>'+'\n'+'<img src="today.jpg" style="zoom: 100%;" />'+'\n\n')
+        plt.text(a, b + 0.05, '%.0f' % b, ha='center', va='bottom',fontdict=font)
+
+    # 设置坐标轴颜色
+    ax = plt.gca()  # 获取当前坐标轴
+    ax.spines['bottom'].set_color('gray')  # 设置底边框颜色
+    ax.spines['left'].set_color('gray')  # 设置左边框颜色
+    ax.tick_params(axis='both', colors='gray')  # 设置刻度颜色
+    fig.tight_layout()
+    plt.savefig('today.png',transparent=True)
+    f.write('<div align=center>'+'\n'+'<img src="today.png" style="zoom: 100%;" />'+'\n\n')
     
     f.write('| 今日总饮水量 | 每小时平均饮水量 |'+'\n'+'| :----: | :----: |'+'\n'+'| '+str(waterall)+' | '+str(int(waterall/(p+1)))+' |'+'\n'+'</div>'+'\n\n')
     
@@ -186,16 +209,25 @@ for x in range(30,0,-1):
         monthAll += int(data['data'][date]['all'])
         monthCount += 1
 plt.style.use('seaborn-muted')
-fig, ax = plt.subplots(figsize=(18, 6),dpi=100)
+fig, ax = plt.subplots(figsize=(18, 6),dpi=200)
 ax.spines['right'].set_visible(False)
 ax.spines['top'].set_visible(False)
 plt.bar(dateList, mlList,width=0.45)
-plt.xlabel('date')
-plt.ylabel('ml')
+plt.axhline(y=2000, linestyle='--', color='red')
+font = {'family': 'serif', 'color': 'gray'}
+plt.xlabel('time',fontdict=font)
+plt.ylabel('ml',fontdict=font)
 for a, b in zip(dateList, mlList):
-    plt.text(a, b + 0.05, '%.0f' % b, ha='center', va='bottom')
-plt.savefig('30.jpg')
-f.write('<div align=center>'+'\n'+'<img src="30.jpg"style="zoom: 100%;" />'+'\n\n')
+    plt.text(a, b + 0.05, '%.0f' % b, ha='center', va='bottom',fontdict=font)
+
+# 设置坐标轴颜色
+ax = plt.gca()  # 获取当前坐标轴
+ax.spines['bottom'].set_color('gray')  # 设置底边框颜色
+ax.spines['left'].set_color('gray')  # 设置左边框颜色
+ax.tick_params(axis='both', colors='gray')  # 设置刻度颜色
+fig.tight_layout()
+plt.savefig('30.png',transparent=True)
+f.write('<div align=center>'+'\n'+'<img src="30.png"style="zoom: 100%;" />'+'\n\n')
 f.write('| 总饮水量 | 日均饮水量 |'+'\n'+'| :----: | :----: |'+'\n'+'| '+str(monthAll)+' | '+str(int(monthAll/monthCount))+' |'+'\n'+'</div>'+'\n\n')
 
 if days >= 30:
