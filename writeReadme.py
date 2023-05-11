@@ -43,11 +43,11 @@ timeD=int(time.strftime("%d", time.localtime()))
 timeH=int(time.strftime("%H", time.localtime()))
 timeM=int(time.strftime("%M", time.localtime()))
 
-timeY=2023
-timeMonth=5
-timeD=1
-timeH=0
-timeM=30
+#timeY=2023
+#timeMonth=5
+#timeD=1
+#timeH=0
+#timeM=30
 
 if timeD==1 and timeH==0 and timeM<=30:
     if timeMonth==1:
