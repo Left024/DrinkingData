@@ -43,9 +43,11 @@ timeD=int(time.strftime("%d", time.localtime()))
 timeH=int(time.strftime("%H", time.localtime()))
 timeM=int(time.strftime("%M", time.localtime()))
 
-#timeD=1
-#timeH=0
-#timeM=30
+timeY=2023
+timeMonth=5
+timeD=1
+timeH=0
+timeM=30
 
 if timeD==1 and timeH==0 and timeM<=30:
     if timeMonth==1:
@@ -83,7 +85,7 @@ if timeD==1 and timeH==0 and timeM<=30:
     plt.axhline(y=2000, linestyle='--', color='red')
     # 设置字体
     font = {'family': 'serif', 'color': '#999999'}
-    plt.xlabel('time',fontdict=font)
+    plt.xlabel('date',fontdict=font)
     plt.ylabel('ml',fontdict=font)
     for a, b in zip(dateList, mlList):
         plt.text(a, b + 0.05, '%.0f' % b, ha='center', va='bottom',fontdict=font)
@@ -215,7 +217,7 @@ ax.spines['top'].set_visible(False)
 plt.bar(dateList, mlList,width=0.45)
 plt.axhline(y=2000, linestyle='--', color='red')
 font = {'family': 'serif', 'color': '#999999'}
-plt.xlabel('time',fontdict=font)
+plt.xlabel('date',fontdict=font)
 plt.ylabel('ml',fontdict=font)
 for a, b in zip(dateList, mlList):
     plt.text(a, b + 0.05, '%.0f' % b, ha='center', va='bottom',fontdict=font)
