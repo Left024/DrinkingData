@@ -77,8 +77,8 @@ if timeD==1 and timeH==0 and timeM<=30:
             monthCount += 1
     monthData['all']=monthAll
     monthData['average']=int(monthAll/monthCount)
-    plt.style.use('seaborn-muted')
-    print(plt.style.available)
+    plt.style.use('seaborn-v0_8-muted')
+    #print(plt.style.available)
     fig, ax = plt.subplots(figsize=(18, 6),dpi=200)
     ax.spines['right'].set_visible(False)
     ax.spines['top'].set_visible(False)
