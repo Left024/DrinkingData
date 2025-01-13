@@ -155,7 +155,7 @@ if time.strftime("%Y-%m-%d", time.localtime()) in data['data']:
             times.append(str(hhh))
             waters.append(0)
         
-    plt.style.use('seaborn-muted')
+    plt.style.use('seaborn-v0_8-muted')
     fig, ax = plt.subplots(figsize=(18, 6),dpi=200)
     ax.spines['right'].set_visible(False)
     ax.spines['top'].set_visible(False)
@@ -211,7 +211,7 @@ for x in range(30,0,-1):
         mlList.append(data['data'][date]['all'])
         monthAll += int(data['data'][date]['all'])
         monthCount += 1
-plt.style.use('seaborn-muted')
+plt.style.use('seaborn-v0_8-muted')
 fig, ax = plt.subplots(figsize=(18, 6),dpi=200)
 ax.spines['right'].set_visible(False)
 ax.spines['top'].set_visible(False)
